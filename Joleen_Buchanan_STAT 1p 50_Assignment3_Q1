@@ -1,0 +1,38 @@
+#Question 1
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
+import matplotlib.pyplot as plt
+
+
+data = pd.read_csv('/home/jojo/Downloads/dataset_assignment3 (1)/dataset_assignment3/crime.csv')
+
+
+X = data[['PctUnemployed', 'PctBSorMore']]
+y = data['ViolentCrimesPerPop']
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a linear regression model
+model = LinearRegression()
+
+# Train the model on the training set
+model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = model.predict(X_test)
+
+
+print('Mean Absolute Error:', metrics.mean_absolute_error(y_test, y_pred))
+print('Mean Squared Error:', metrics.mean_squared_error(y_test, y_pred))
+print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
+
+
+coefficients = model.coef_
+
+print('Coefficient for percentage_unemployed:', coefficients[0])
+print('Coefficient for percentage_bachelors_or_higher:', coefficients[1])
+

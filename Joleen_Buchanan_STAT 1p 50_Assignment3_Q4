@@ -1,0 +1,30 @@
+#Question 4
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, f1_score
+
+
+data = pd.read_csv('/home/jojo/Downloads/dataset_assignment3 (1)/dataset_assignment3/kidney_disease.csv')
+
+
+X = data.drop('ckd', axis=1)
+y = data['ckd']
+
+# Split the data into training and testing sets (70% training, 30% testing)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+#The logistic model
+model = LogisticRegression(max_iter=1000, solver='lbfgs')
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = model.predict(X_test)
+# Evaluate
+accuracy = accuracy_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+print('Accuracy:', accuracy)
+print('F1 Score:', f1)

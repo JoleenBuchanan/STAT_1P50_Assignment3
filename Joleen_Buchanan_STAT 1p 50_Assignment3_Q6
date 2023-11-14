@@ -1,0 +1,63 @@
+#Question6
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+data = pd.read_csv('/home/jojo/Downloads/dataset_assignment3 (1)/dataset_assignment3/email.csv')
+#add columns
+data['hyperlink'] = None
+data['free'] = None
+data['click'] = None
+data['business'] = None
+data['frequency'] = None
+
+# Define the function to calculate frequency ratio
+    list_of_words = input_string.split(' ')
+    dict_of_frequencies = {}
+
+    for word in list_of_words:
+        if word in dict_of_frequencies.keys():
+            dict_of_frequencies[word] = dict_of_frequencies[word] + 1
+        else:
+            dict_of_frequencies[word] = 1
+
+    # Find the most frequent word
+    most_frequent_word = max(dict_of_frequencies, key=dict_of_frequencies.get)
+
+    # Calculate the frequency ratio
+    frequency_ratio = dict_of_frequencies[most_frequent_word] / len(list_of_words)
+
+    return frequency_ratio
+
+#go through the rows
+for index, row in data.iterrows():
+    mail_text = row['email'].lower()  # Convert text to lowercase for case-insensitive matching
+
+    # Check for the presence of words
+    data.at[index, 'hyperlink'] = int('hyperlink' in mail_text)
+    data.at[index, 'free'] = int('free' in mail_text)
+    data.at[index, 'click'] = int('click' in mail_text)
+    data.at[index, 'business'] = int('business' in mail_text)
+
+    # Use the get_frequency_ratio function to fill the 'frequency' column
+    data.at[index, 'frequency'] = get_frequency_ratio(mail_text)
+
+# Split the data
+train_data, test_data, train_labels, test_labels = train_test_split(
+    data[['hyperlink', 'free', 'click', 'business', 'frequency']],
+    data['label'],
+    test_size=0.3,
+    random_state=42)
+
+# logistic regression model
+model = LogisticRegression()
+model.fit(train_data, train_labels)
+
+# predictions
+predictions = model.predict(test_data)
+
+# Report the accuracy
+accuracy = accuracy_score(test_labels, predictions)
+print('Accuracy:', accuracy)
+

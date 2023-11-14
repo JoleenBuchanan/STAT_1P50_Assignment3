@@ -1,0 +1,32 @@
+#Question 5
+
+#the modified code
+
+def get_frequency_ratio(input_string):
+    list_of_words = input_string.split(' ')
+    dict_of_frequencies = {}
+
+    for word in list_of_words:
+        if word in dict_of_frequencies.keys():
+            dict_of_frequencies[word] = dict_of_frequencies[word] + 1
+        else:
+            dict_of_frequencies[word] = 1
+
+    # Find the most frequent word
+    most_frequent_word = max(dict_of_frequencies, key=dict_of_frequencies.get)
+
+    # Calculate the frequency ratio
+    frequency_ratio = dict_of_frequencies[most_frequent_word] / len(list_of_words)
+    print("Word\t\tFrequency")
+    for word, frequency in dict_of_frequencies.items():
+        print(f"{word}\t\t{frequency}")
+
+    print("\nFrequency Ratio:", frequency_ratio)
+
+    return frequency_ratio
+
+
+#testing
+userStringInput = input("Enter the text: ")
+get_frequency_ratio(userStringInput)
+

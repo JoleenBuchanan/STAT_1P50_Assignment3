@@ -1,0 +1,39 @@
+#Question 2
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
+
+data = pd.read_csv('/home/jojo/Downloads/dataset_assignment3 (1)/dataset_assignment3/crime.csv')
+
+
+
+X = data.drop('ViolentCrimesPerPop', axis=1)
+y = data['ViolentCrimesPerPop']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a linear regression model
+model = LinearRegression()
+
+# Train the model on the training set
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+print('Mean Absolute Error:', metrics.mean_absolute_error(y_test, y_pred))
+print('Mean Squared Error:', metrics.mean_squared_error(y_test, y_pred))
+print('Root Mean Squared Error:', metrics.mean_squared_error(y_test, y_pred)**0.5)
+
+# Get the coefficients of the regression model
+coefficients = model.coef_
+
+most_influential_factor_index = coefficients.argmax()
+most_influential_factor_name = X.columns[most_influential_factor_index]
+
+print('Most influential factor:', most_influential_factor_name)
+print('Coefficient for the most influential factor:', coefficients[most_influential_factor_index])
